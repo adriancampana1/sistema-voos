@@ -1,5 +1,6 @@
 package com.adrian.sv.service.impl;
 
+import com.adrian.sv.dto.response.AirportResponse;
 import com.adrian.sv.model.mapper.AirportMapper;
 import com.adrian.sv.dto.request.airport.CreateAirportRequest;
 import com.adrian.sv.dto.request.airport.UpdateAirportRequest;
@@ -12,7 +13,6 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,10 +23,11 @@ public class AirportServiceImpl implements AirportService {
     private final AirportMapper airportMapper;
 
     @Override
-    public Aeroporto create(CreateAirportRequest request) {
+    public AirportResponse create(CreateAirportRequest request) {
         try {
-            Aeroporto aeroporto = this.airportMapper.toEntity(request);
-            return this.airportRepository.save(aeroporto);
+            Aeroporto airport = this.airportMapper.toEntity(request);
+            Aeroporto savedAirport = this.airportRepository.save(airport);
+            return this.airportMapper.toResponseDTO(savedAirport);
         } catch (Exception e) {
             log.error("Falha ao criar aeroporto. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao criar aeroporto.");
@@ -34,14 +35,16 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
-    public List<Aeroporto> findAll() {
-        return this.airportRepository.findAll();
+    public List<AirportResponse> findAll() {
+        List<Aeroporto> airports = this.airportRepository.findAll();
+        return airports.stream().map(this.airportMapper::toResponseDTO).toList();
     }
 
     @Override
-    public Optional<Aeroporto> findById(Long id) {
+    public AirportResponse findById(Long id) {
         try {
-            return this.airportRepository.findById(id);
+            Aeroporto airport = this.airportRepository.findById(id).orElseThrow(() -> new BadRequestException("Aeroporto não encontrado"));
+            return this.airportMapper.toResponseDTO(airport);
         } catch (Exception e) {
             log.error("Falha ao encontrar aeroporto. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao encontrar aeroporto.");
@@ -49,12 +52,12 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
-    public Aeroporto update(Long id, UpdateAirportRequest request) {
+    public AirportResponse update(Long id, UpdateAirportRequest request) {
         try {
-            Aeroporto aeroporto = this.airportRepository.findById(id).orElseThrow(() -> new BadRequestException("Aeroporto não encontrado."));
-            this.airportMapper.updateEntity(request, aeroporto);
-
-            return this.airportRepository.save(aeroporto);
+            Aeroporto airport = this.airportRepository.findById(id).orElseThrow(() -> new BadRequestException("Aeroporto não encontrado."));
+            this.airportMapper.updateEntity(request, airport);
+            Aeroporto savedAirport = this.airportRepository.save(airport);
+            return this.airportMapper.toResponseDTO(savedAirport);
         } catch (Exception e) {
             log.error("Falha ao atualizar aeroporto. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao atualizar aeroporto.");

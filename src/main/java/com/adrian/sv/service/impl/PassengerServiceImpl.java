@@ -1,5 +1,6 @@
 package com.adrian.sv.service.impl;
 
+import com.adrian.sv.dto.response.PassengerResponse;
 import com.adrian.sv.model.mapper.PassengerMapper;
 import com.adrian.sv.dto.request.passenger.CreatePassengerRequest;
 import com.adrian.sv.dto.request.passenger.UpdatePassengerRequest;
@@ -12,7 +13,6 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,10 +23,11 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerMapper passengerMapper;
 
     @Override
-    public Passageiro create(CreatePassengerRequest request) {
+    public PassengerResponse create(CreatePassengerRequest request) {
         try {
             Passageiro passenger = this.passengerMapper.toEntity(request);
-            return this.passengerRepository.save(passenger);
+            Passageiro savedPassenger = this.passengerRepository.save(passenger);
+            return this.passengerMapper.toResponseDTO(savedPassenger);
         } catch (Exception e) {
             log.error("Falha ao criar passageiro. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao criar passageiro.");
@@ -34,9 +35,10 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public List<Passageiro> findAll() {
+    public List<PassengerResponse> findAll() {
         try {
-            return this.passengerRepository.findAll();
+            List<Passageiro> passengers = this.passengerRepository.findAll();
+            return passengers.stream().map(this.passengerMapper::toResponseDTO).toList();
         } catch (Exception e) {
             log.error("Falha ao listar passageiros. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao listar passageiro.");
@@ -44,9 +46,10 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public Optional<Passageiro> findById(Long id) {
+    public PassengerResponse findById(Long id) {
         try {
-            return this.passengerRepository.findById(id);
+            Passageiro passenger = this.passengerRepository.findById(id).orElseThrow(() -> new BadRequestException("Passageiro não encontrado"));
+            return this.passengerMapper.toResponseDTO(passenger);
         } catch (Exception e) {
             log.error("Falha ao buscar passageiro. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao buscar passageiro.");
@@ -54,12 +57,13 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public Passageiro update(Long id, UpdatePassengerRequest request) {
+    public PassengerResponse update(Long id, UpdatePassengerRequest request) {
         try {
             Passageiro passenger = this.passengerRepository.findById(id).orElseThrow(() -> new BadRequestException("Passageiro não encontrado."));
             this.passengerMapper.updateEntity(request, passenger);
 
-            return this.passengerRepository.save(passenger);
+            Passageiro savedPassenger = this.passengerRepository.save(passenger);
+            return this.passengerMapper.toResponseDTO(savedPassenger);
         } catch (Exception e) {
             log.error("Falha ao atualizar passageiro. {}", String.valueOf(e));
             throw new RuntimeException("Falha ao atualizar passageiro.");
