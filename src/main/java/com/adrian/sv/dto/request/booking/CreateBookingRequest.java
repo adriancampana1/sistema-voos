@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public record CreateBookingRequest(
         @NotBlank Long idPassenger,
         @NotBlank Long idFlight,
+        String bookingNumber,
         @NotBlank LocalDate purchaseDate,
         @NotBlank BigDecimal totalAmount,
         @NotBlank String paymentMethod,

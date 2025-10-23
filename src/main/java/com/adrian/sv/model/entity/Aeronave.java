@@ -32,6 +32,14 @@ public class Aeronave {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public TipoAeronave getTipoAeronave() {
+        return tipoAeronave;
+    }
+
+    public void setTipoAeronave(TipoAeronave tipoAeronave) {
+        this.tipoAeronave = tipoAeronave;
+    }
+
     @Override
     public String toString() {
         return "Aeronave{" +

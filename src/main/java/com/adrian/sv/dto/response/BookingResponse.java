@@ -1,16 +1,14 @@
 package com.adrian.sv.dto.response;
 
-import com.adrian.sv.model.entity.Passageiro;
-import com.adrian.sv.model.entity.Voo;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record BookingResponse(
         Long id,
-        Passageiro passenger,
-        Voo flight,
+        PassengerResponse passenger,
+        FlightResponse flight,
+        String bookingNumber,
         LocalDate purchaseDate,
         BigDecimal totalAmount,
         String paymentMethod,

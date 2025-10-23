@@ -1,12 +1,10 @@
 package com.adrian.sv.dto.response;
 
-import com.adrian.sv.model.entity.CategoriaFuncionario;
-
 import java.time.LocalDateTime;
 
 public record EmployeeResponse(
         Long id,
-        CategoriaFuncionario employeeCategory,
+        EmployeeCategoryResponse employeeCategory,
         String name,
         String email,
         LocalDateTime createdAt,

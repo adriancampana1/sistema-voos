@@ -30,6 +30,7 @@ public class Reserva {
     @JoinColumn(name = "id_voo", nullable = false)
     private Voo voo;
 
+    private String bookingNumber;
     private LocalDate purchaseDate;
     private BigDecimal totalAmount;
     private String paymentMethod;

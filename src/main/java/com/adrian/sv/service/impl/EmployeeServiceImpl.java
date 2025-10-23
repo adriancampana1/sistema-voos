@@ -75,8 +75,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             Funcionario employee = this.employeeRepository.findById(id).orElseThrow(() -> new BadRequestException("Funcionario não encontrado"));
             this.employeeRepository.delete(employee);
         } catch (Exception e) {
-            log.error("Falha ao criar funcionario. {}", String.valueOf(e));
-            throw new RuntimeException("Falha ao criar funcionario.");
+            log.error("Falha ao deletar funcionario. {}", String.valueOf(e));
+            throw new RuntimeException("Falha ao deletar funcionario.");
         }
     }
 }

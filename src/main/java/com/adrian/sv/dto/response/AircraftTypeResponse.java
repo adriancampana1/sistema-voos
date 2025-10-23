@@ -1,19 +1,20 @@
 package com.adrian.sv.dto.response;
 
-import com.adrian.sv.model.entity.Aeronave;
-import com.adrian.sv.model.entity.Voo;
+import com.adrian.sv.model.entity.AircraftCategory;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record AircraftTypeResponse(
         Long id,
         String type,
         String description,
         Short passengerCapacity,
+        AircraftCategory aircraftCategory,
+        Integer maxSpeed,
+        Integer rangeKm,
+        Long cargoCapacityKg,
+        Integer maxAltitudeFt,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        List<Aeronave> aircraft,
-        List<Voo> voos
+        LocalDateTime updatedAt
 ) {
 }

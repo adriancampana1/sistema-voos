@@ -26,6 +26,22 @@ public class TipoAeronave {
     private String description;
     private Short passengerCapacity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "aircraft_category")
+    private AircraftCategory aircraftCategory;
+
+    @Column(name = "max_speed")
+    private Integer maxSpeed;
+
+    @Column(name = "range_km")
+    private Integer rangeKm;
+
+    @Column(name = "cargo_capacity_kg")
+    private Long cargoCapacityKg;
+
+    @Column(name = "max_altitude_ft")
+    private Integer maxAltitudeFt;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -47,6 +63,11 @@ public class TipoAeronave {
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", passengerCapacity=" + passengerCapacity +
+                ", aircraftCategory=" + aircraftCategory +
+                ", maxSpeed=" + maxSpeed +
+                ", rangeKm=" + rangeKm +
+                ", cargoCapacityKg=" + cargoCapacityKg +
+                ", maxAltitudeFt=" + maxAltitudeFt +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

@@ -4,8 +4,10 @@ import com.adrian.sv.dto.request.aircraft.CreateAircraftRequest;
 import com.adrian.sv.dto.request.aircraft.UpdateAircraftRequest;
 import com.adrian.sv.dto.response.AircraftResponse;
 import com.adrian.sv.model.entity.Aeronave;
+import com.adrian.sv.model.entity.TipoAeronave;
 import com.adrian.sv.model.mapper.AircraftMapper;
 import com.adrian.sv.repository.AircraftRepository;
+import com.adrian.sv.repository.AircraftTypeRepository;
 import com.adrian.sv.service.AircraftService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,16 @@ import java.util.List;
 public class AircraftServiceImpl implements AircraftService {
 
     private final AircraftRepository aircraftRepository;
+    private final AircraftTypeRepository aircraftTypeRepository;
     private final AircraftMapper aircraftMapper;
 
     @Override
     public AircraftResponse create(CreateAircraftRequest request) {
         try {
+            TipoAeronave aircraftType = this.aircraftTypeRepository.findById(request.idAircraftType()).orElseThrow(
+                    () -> new BadRequestException("Tipo de aeronave não encontrado!"));
             Aeronave aircraft = this.aircraftMapper.toEntity(request);
+            aircraft.setTipoAeronave(aircraftType);
             Aeronave savedAircraft = this.aircraftRepository.save(aircraft);
             return this.aircraftMapper.toResponseDTO(savedAircraft);
         } catch (Exception e) {
