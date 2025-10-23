@@ -5,18 +5,20 @@ import com.adrian.sv.dto.request.airport.UpdateAirportRequest;
 import com.adrian.sv.dto.response.AirportResponse;
 import com.adrian.sv.service.AirportService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/airport")
+@RequestMapping("/airports")
 @AllArgsConstructor
 public class AirportController {
 
     private final AirportService airportService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public AirportResponse create(@RequestBody() CreateAirportRequest request) {
         return this.airportService.create(request);
     }
@@ -32,11 +34,13 @@ public class AirportController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public AirportResponse update(@PathVariable("id") Long id, @RequestBody() UpdateAirportRequest request) {
         return this.airportService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable("id") Long id) {
         this.airportService.delete(id);
     }
