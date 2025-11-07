@@ -17,9 +17,9 @@ spring:
         format_sql: true
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5434/sistema_voos
+    url: postgresql://adrian:71fULydrMH3a4XH4EbMExkqPC0mYZmBG@dpg-d46jloje5dus73aruha0-a.oregon-postgres.render.com/sistema_voos_db
     username: adrian
-    password: 123456
+    password: 71fULydrMH3a4XH4EbMExkqPC0mYZmBG
 
 app:
   jwt:
